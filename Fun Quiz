@@ -1,0 +1,187 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IndiaPlay — Play with India</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #fffaf2;
+      color: #20231f;
+    }
+
+    header {
+      padding: 20px;
+      font-size: 24px;
+      font-weight: bold;
+      border-bottom: 1px solid #eee2d0;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 50px auto;
+      padding: 20px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: clamp(40px, 8vw, 72px);
+      margin-bottom: 12px;
+    }
+
+    h1 span { color: #ed8624; }
+
+    p {
+      color: #666b63;
+      line-height: 1.6;
+    }
+
+    .games {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 16px;
+      margin-top: 35px;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid #eee2d0;
+      border-radius: 18px;
+      padding: 24px;
+      text-align: left;
+    }
+
+    .emoji { font-size: 40px; }
+
+    button {
+      background: #21845b;
+      color: white;
+      border: 0;
+      border-radius: 10px;
+      padding: 12px 16px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover { background: #176a47; }
+
+    #result {
+      margin-top: 25px;
+      padding: 20px;
+      border-radius: 14px;
+      background: #e5f4e9;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <header>🇮🇳 IndiaPlay</header>
+
+  <main>
+    <p>SMALL GAMES. BIG INDIA ENERGY.</p>
+    <h1>India is your <span>playground.</span></h1>
+    <p>Play quick quizzes, discover facts and explore India in a fun way.</p>
+
+    <div class="games">
+      <div class="card">
+        <div class="emoji">🗺️</div>
+        <h2>Guess the State</h2>
+        <p>Can you identify the capital of an Indian state?</p>
+        <button onclick="playQuiz()">Play quiz →</button>
+      </div>
+
+      <div class="card">
+        <div class="emoji">💸</div>
+        <h2>Spend ₹1 Crore</h2>
+        <p>Imagine how you would spend ten million rupees.</p>
+        <button onclick="spendMoney()">Start spending →</button>
+      </div>
+
+      <div class="card">
+        <div class="emoji">🏏</div>
+        <h2>Cricket Challenge</h2>
+        <p>Test your cricket knowledge.</p>
+        <button onclick="cricketQuiz()">Play cricket →</button>
+      </div>
+
+      <div class="card">
+        <div class="emoji">✨</div>
+        <h2>India Facts</h2>
+        <p>Discover a surprising fact about India.</p>
+        <button onclick="showFact()">Surprise me →</button>
+      </div>
+    </div>
+
+    <div id="result" aria-live="polite"></div>
+  </main>
+
+  <script>
+    function showResult(title, message) {
+      const box = document.getElementById("result");
+      box.style.display = "block";
+      box.innerHTML = "<h2>" + title + "</h2><p>" +
+        message + "</p>";
+      box.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+
+    function playQuiz() {
+      const answer = prompt(
+        "What is the capital of Rajasthan?\\nA. Jaipur\\nB. Mumbai\\nC. Patna"
+      );
+      const correct = answer &&
+        ["a", "jaipur"].includes(answer.trim().toLowerCase());
+
+      showResult(
+        correct ? "Correct! 🎉" : "Keep exploring! 🗺️",
+        correct
+          ? "Jaipur is the capital of Rajasthan."
+          : "The correct answer is Jaipur. Try again!"
+      );
+    }
+
+    function spendMoney() {
+      const amount = prompt("You have ₹1,00,00,000. How much would you spend?");
+      const value = Number(amount);
+
+      if (amount === null || amount.trim() === "" ||
+          !Number.isFinite(value) || value < 0) {
+        showResult("Try again", "Enter a valid non-negative amount.");
+        return;
+      }
+
+      showResult(
+        value <= 10000000 ? "Your budget" : "Over budget!",
+        value <= 10000000
+          ? "You would have ₹" +
+            (10000000 - value).toLocaleString("en-IN") + " left."
+          : "You exceeded your ₹1 crore budget."
+      );
+    }
+
+    function cricketQuiz() {
+      const answer = prompt("How many legal balls are in a standard over?");
+      const correct = answer && answer.trim() === "6";
+
+      showResult(
+        correct ? "Six! 🏏" : "Not quite!",
+        "A standard cricket over contains six legal deliveries."
+      );
+    }
+
+    function showFact() {
+      const facts = [
+        "India's Constitution came into effect on 26 January 1950.",
+        "The Indian national flag has saffron, white and green stripes.",
+        "Chess has ancient roots in India.",
+        "India has 22 constitutionally scheduled languages."
+      ];
+
+      const fact = facts[Math.floor(Math.random() * facts.length)];
+      showResult("Did you know? 🇮🇳", fact);
+    }
+  </script>
+</body>
+</html>
