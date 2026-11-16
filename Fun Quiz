@@ -1,187 +1,42 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>IndiaPlay — Play with India</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #fffaf2;
-      color: #20231f;
-    }
-
-    header {
-      padding: 20px;
-      font-size: 24px;
-      font-weight: bold;
-      border-bottom: 1px solid #eee2d0;
-    }
-
-    main {
-      max-width: 900px;
-      margin: 50px auto;
-      padding: 20px;
-      text-align: center;
-    }
-
-    h1 {
-      font-size: clamp(40px, 8vw, 72px);
-      margin-bottom: 12px;
-    }
-
-    h1 span { color: #ed8624; }
-
-    p {
-      color: #666b63;
-      line-height: 1.6;
-    }
-
-    .games {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-      gap: 16px;
-      margin-top: 35px;
-    }
-
-    .card {
-      background: white;
-      border: 1px solid #eee2d0;
-      border-radius: 18px;
-      padding: 24px;
-      text-align: left;
-    }
-
-    .emoji { font-size: 40px; }
-
-    button {
-      background: #21845b;
-      color: white;
-      border: 0;
-      border-radius: 10px;
-      padding: 12px 16px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    button:hover { background: #176a47; }
-
-    #result {
-      margin-top: 25px;
-      padding: 20px;
-      border-radius: 14px;
-      background: #e5f4e9;
-      display: none;
-    }
-  </style>
-</head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>IndiaPlay</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:#08111f;color:#f8fafc}button{font:inherit;cursor:pointer}.wrap{max-width:1000px;margin:auto;padding:28px 18px 70px}.nav{display:flex;gap:10px;flex-wrap:wrap;position:sticky;top:0;z-index:10;background:#08111fee;padding:14px 18px;border-bottom:1px solid #263449}.nav b{color:#f59e0b;margin-right:auto;font-size:1.25rem}.nav button{border:1px solid #3b4a61;background:#111d31;color:white;border-radius:10px;padding:9px 12px}.nav button.active{background:#f59e0b;color:#111827}.page{display:none}.page.active{display:block}.hero{padding:65px 0 25px}.hero h1{font-size:clamp(3rem,10vw,7rem);line-height:.9;margin:.15em 0}.hero p{max-width:680px;color:#bdc7d6;font-size:1.15rem}.cards,.shop{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}.card,.item,.panel{background:#111d31;border:1px solid #293851;border-radius:22px;padding:23px}.card{cursor:pointer;transition:.2s}.card:hover{transform:translateY(-4px);border-color:#f59e0b}.emoji{font-size:3.5rem}.orange{color:#f59e0b}.money{font-size:clamp(2rem,8vw,4.5rem);font-weight:900;color:#fbbf24}.bar{height:10px;background:#34445b;border-radius:10px;overflow:hidden;margin:12px 0 28px}.bar div{height:100%;width:0;background:#f97316}.item{text-align:center}.item h3{margin-bottom:5px}.price{color:#fdba74;font-weight:800}.controls{display:flex;justify-content:center;align-items:center;gap:9px;margin-top:14px}.controls button,.action{border:0;border-radius:10px;padding:10px 14px;font-weight:800}.buy,.action{background:#f97316;color:white}.sell{background:#dbe3ef}.qty{min-width:30px;font-weight:900}.receipt{margin-top:25px}.question{font-size:1.35rem;line-height:1.5;margin:26px 0}.answers{display:grid;gap:11px}.answers button{padding:15px;text-align:left;border:2px solid #2b3b54;background:#101b2e;color:white;border-radius:13px;font-weight:750}.answers button:hover{border-color:#22c55e}.status{display:flex;justify-content:space-between;color:#86efac;font-weight:800}.feedback{min-height:52px;margin-top:18px;font-weight:800}.actions{display:flex;gap:10px;flex-wrap:wrap}.small{color:#9eabc0;font-size:.9rem}
+</style></head>
 <body>
-  <header>🇮🇳 IndiaPlay</header>
-
-  <main>
-    <p>SMALL GAMES. BIG INDIA ENERGY.</p>
-    <h1>India is your <span>playground.</span></h1>
-    <p>Play quick quizzes, discover facts and explore India in a fun way.</p>
-
-    <div class="games">
-      <div class="card">
-        <div class="emoji">🗺️</div>
-        <h2>Guess the State</h2>
-        <p>Can you identify the capital of an Indian state?</p>
-        <button onclick="playQuiz()">Play quiz →</button>
-      </div>
-
-      <div class="card">
-        <div class="emoji">💸</div>
-        <h2>Spend ₹1 Crore</h2>
-        <p>Imagine how you would spend ten million rupees.</p>
-        <button onclick="spendMoney()">Start spending →</button>
-      </div>
-
-      <div class="card">
-        <div class="emoji">🏏</div>
-        <h2>Cricket Challenge</h2>
-        <p>Test your cricket knowledge.</p>
-        <button onclick="cricketQuiz()">Play cricket →</button>
-      </div>
-
-      <div class="card">
-        <div class="emoji">✨</div>
-        <h2>India Facts</h2>
-        <p>Discover a surprising fact about India.</p>
-        <button onclick="showFact()">Surprise me →</button>
-      </div>
-    </div>
-
-    <div id="result" aria-live="polite"></div>
-  </main>
-
-  <script>
-    function showResult(title, message) {
-      const box = document.getElementById("result");
-      box.style.display = "block";
-      box.innerHTML = "<h2>" + title + "</h2><p>" +
-        message + "</p>";
-      box.scrollIntoView({ behavior: "smooth", block: "nearest" });
-    }
-
-    function playQuiz() {
-      const answer = prompt(
-        "What is the capital of Rajasthan?\\nA. Jaipur\\nB. Mumbai\\nC. Patna"
-      );
-      const correct = answer &&
-        ["a", "jaipur"].includes(answer.trim().toLowerCase());
-
-      showResult(
-        correct ? "Correct! 🎉" : "Keep exploring! 🗺️",
-        correct
-          ? "Jaipur is the capital of Rajasthan."
-          : "The correct answer is Jaipur. Try again!"
-      );
-    }
-
-    function spendMoney() {
-      const amount = prompt("You have ₹1,00,00,000. How much would you spend?");
-      const value = Number(amount);
-
-      if (amount === null || amount.trim() === "" ||
-          !Number.isFinite(value) || value < 0) {
-        showResult("Try again", "Enter a valid non-negative amount.");
-        return;
-      }
-
-      showResult(
-        value <= 10000000 ? "Your budget" : "Over budget!",
-        value <= 10000000
-          ? "You would have ₹" +
-            (10000000 - value).toLocaleString("en-IN") + " left."
-          : "You exceeded your ₹1 crore budget."
-      );
-    }
-
-    function cricketQuiz() {
-      const answer = prompt("How many legal balls are in a standard over?");
-      const correct = answer && answer.trim() === "6";
-
-      showResult(
-        correct ? "Six! 🏏" : "Not quite!",
-        "A standard cricket over contains six legal deliveries."
-      );
-    }
-
-    function showFact() {
-      const facts = [
-        "India's Constitution came into effect on 26 January 1950.",
-        "The Indian national flag has saffron, white and green stripes.",
-        "Chess has ancient roots in India.",
-        "India has 22 constitutionally scheduled languages."
-      ];
-
-      const fact = facts[Math.floor(Math.random() * facts.length)];
-      showResult("Did you know? 🇮🇳", fact);
-    }
-  </script>
-</body>
-</html>
+<nav class="nav"><b>INDIAPLAY</b><button data-page="home" class="active">Home</button><button data-page="spend">Spend ₹100 Cr</button><button data-page="states">Guess State</button></nav>
+<main class="wrap">
+<section id="home" class="page active"><div class="hero"><div class="orange"><b>INTERACTIVE INDIA</b></div><h1>Explore.<br>Play. Learn.</h1><p>Two lightweight games in one standalone HTML file. No login, database or installation required.</p></div><div class="cards"><article class="card" data-open="spend"><div class="emoji">💰</div><h2>Spend ₹100 Crore</h2><p>Buy items while watching your fictional budget.</p><b class="orange">PLAY →</b></article><article class="card" data-open="states"><div class="emoji">🗺️</div><h2>Guess the Indian State</h2><p>Read each clue and choose the correct state.</p><b class="orange">PLAY →</b></article></div></section>
+<section id="spend" class="page"><h1>💰 Spend ₹100 Crore</h1><p class="small">Prices are fictional and illustrative.</p><div id="money" class="money"></div><div class="bar"><div id="progress"></div></div><div id="shop" class="shop"></div><div class="panel receipt"><h2>Your receipt</h2><ul id="receipt"></ul><strong id="spent"></strong><div class="actions" style="margin-top:16px"><button class="action" id="reset">Start Again</button><button class="action" id="share">Copy Result</button></div></div></section>
+<section id="states" class="page"><h1>🗺️ Guess the Indian State</h1><div class="panel"><div class="status"><span id="round"></span><span id="score"></span></div><div id="quiz"></div></div></section>
+</main>
+<script>
+(function(){
+const pages=[...document.querySelectorAll('.page')];
+function openPage(id){pages.forEach(p=>p.classList.toggle('active',p.id===id));document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));window.scrollTo(0,0)}
+document.querySelectorAll('[data-page]').forEach(b=>b.addEventListener('click',()=>openPage(b.dataset.page)));
+document.querySelectorAll('[data-open]').forEach(b=>b.addEventListener('click',()=>openPage(b.dataset.open)));
+const START=1000000000;let balance=START;const cart={};
+const items=[['phone','📱','Smartphone',100000],['bike','🏍️','Motorbike',250000],['car','🚗','Car',1500000],['luxury','🏎️','Luxury Car',10000000],['home','🏠','City Apartment',30000000],['school','🏫','Build a School',100000000],['hospital','🏥','Build a Hospital',250000000],['jet','✈️','Private Jet',600000000]];
+const fmt=n=>'₹'+new Intl.NumberFormat('en-IN').format(n);
+function drawShop(){document.getElementById('money').textContent=fmt(balance)+' left';document.getElementById('progress').style.width=((START-balance)/START*100)+'%';const shop=document.getElementById('shop');shop.innerHTML='';items.forEach(x=>{const d=document.createElement('article');d.className='item';d.innerHTML='<div class="emoji">'+x[1]+'</div><h3>'+x[2]+'</h3><div class="price">'+fmt(x[3])+'</div><div class="controls"><button class="sell">−</button><span class="qty">'+(cart[x[0]]||0)+'</span><button class="buy">+</button></div>';d.querySelector('.buy').onclick=()=>buy(x);d.querySelector('.sell').onclick=()=>sell(x);shop.appendChild(d)});const bought=items.filter(x=>cart[x[0]]);document.getElementById('receipt').innerHTML=bought.length?bought.map(x=>'<li>'+x[2]+' × '+cart[x[0]]+' = '+fmt(x[3]*cart[x[0]])+'</li>').join(''):'<li>Nothing purchased yet.</li>';document.getElementById('spent').textContent='Total spent: '+fmt(START-balance)}
+function buy(x){if(balance<x[3])return alert('Not enough money left.');balance-=x[3];cart[x[0]]=(cart[x[0]]||0)+1;drawShop()}
+function sell(x){if(!cart[x[0]])return;balance+=x[3];cart[x[0]]--;drawShop()}
+document.getElementById('reset').onclick=()=>{balance=START;Object.keys(cart).forEach(k=>delete cart[k]);drawShop()};
+document.getElementById('share').onclick=async()=>{const t='I spent '+fmt(START-balance)+' in IndiaPlay!';try{await navigator.clipboard.writeText(t);alert('Result copied.')}catch(e){prompt('Copy your result:',t)}};
+const qs=[
+['Known for Jaipur, the Thar Desert, and being India’s largest state by area.','Rajasthan',['Rajasthan','Gujarat','Madhya Pradesh','Punjab']],
+['This western state has India’s longest state coastline and is home to Gir National Park.','Gujarat',['Kerala','Gujarat','Odisha','Goa']],
+['Bengaluru is the capital of this southern state.','Karnataka',['Tamil Nadu','Telangana','Karnataka','Andhra Pradesh']],
+['Kolkata is the capital of this eastern state.','West Bengal',['Assam','Odisha','Bihar','West Bengal']],
+['Mumbai is the capital of this western state.','Maharashtra',['Maharashtra','Goa','Gujarat','Rajasthan']],
+['Known for its backwaters, this state has Thiruvananthapuram as its capital.','Kerala',['Kerala','Karnataka','Tamil Nadu','Telangana']]
+];let qi=0,score=0,locked=false;
+function drawQuiz(){document.getElementById('round').textContent='Question '+Math.min(qi+1,qs.length)+' / '+qs.length;document.getElementById('score').textContent='Score '+score;const q=document.getElementById('quiz');if(qi>=qs.length){q.innerHTML='<div style="text-align:center;padding:28px"><h2>Finished! 🎉</h2><p>You scored <b>'+score+'/'+qs.length+'</b>.</p><button class="action" id="again">Play Again</button></div>';document.getElementById('again').onclick=()=>{qi=0;score=0;drawQuiz()};return}locked=false;const x=qs[qi];q.innerHTML='<div class="question">'+x[0]+'</div><div class="answers" id="answers"></div><div class="feedback" id="feedback"></div>';x[2].forEach(opt=>{const b=document.createElement('button');b.textContent=opt;b.onclick=()=>answer(opt);document.getElementById('answers').appendChild(b)})}
+function answer(opt){if(locked)return;locked=true;const x=qs[qi],f=document.getElementById('feedback');if(opt===x[1]){score++;f.textContent='✓ Correct!';f.style.color='#4ade80'}else{f.textContent='Not quite. The answer is '+x[1]+'.';f.style.color='#fca5a5'}document.getElementById('score').textContent='Score '+score;const b=document.createElement('button');b.className='action';b.textContent=qi===qs.length-1?'See Result →':'Next Question →';b.onclick=()=>{qi++;drawQuiz()};document.getElementById('answers').appendChild(b)}
+drawShop();drawQuiz();
+})();
+</script></body></html>
